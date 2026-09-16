@@ -26,6 +26,23 @@
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 html {
@@ -145,6 +162,7 @@ body {
   text-align: center;
   padding: 60px 14px 40px;
   position: relative;
+  margin-bottom: 5cm;
 }
 
 .hero-badge {
@@ -283,7 +301,7 @@ body {
 .milestone-item {
   position: relative;
   padding-left: 56px;
-  margin-bottom: 55px;
+  margin-bottom: 5cm;
   opacity: 0;
   transform: translateY(35px) scale(0.96);
   transition: all 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -465,7 +483,7 @@ body {
 /* Sliding Floating Poem Interludes */
 .poem-interlude-slide {
   position: relative;
-  margin: 60px 0 60px 20px;
+  margin: 5cm 0 5cm 20px;
   padding: 24px 20px;
   background: linear-gradient(135deg, rgba(35, 18, 62, 0.85), rgba(75, 10, 52, 0.85));
   border: 1px solid rgba(0, 240, 255, 0.35);
@@ -515,6 +533,8 @@ body {
 .climax-section {
   position: relative;
   text-align: center;
+  margin-top: 5cm;
+  margin-bottom: 3cm;
   padding: 80px 10px 110px;
   z-index: 10;
 }
@@ -790,6 +810,43 @@ body {
   color: #f8fafc;
   text-align: justify;
   margin-bottom: 24px;
+}
+
+.heartfelt-plea-box {
+  background: linear-gradient(135deg, rgba(255, 0, 128, 0.22), rgba(0, 240, 255, 0.16));
+  border: 1.5px solid rgba(255, 0, 128, 0.6);
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin: 18px 0;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.35), inset 0 0 18px rgba(0, 240, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: pulsePlea 2.5s infinite ease-in-out;
+}
+
+@keyframes pulsePlea {
+  0%, 100% { box-shadow: 0 0 25px rgba(255, 0, 128, 0.35), inset 0 0 18px rgba(0, 240, 255, 0.15); }
+  50% { box-shadow: 0 0 35px rgba(255, 0, 128, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.25); border-color: var(--glow-cyan); }
+}
+
+.plea-text {
+  font-family: var(--font-tamil);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.7;
+  text-shadow: 0 0 15px rgba(255, 0, 128, 0.7);
+}
+
+.plea-sub {
+  display: block;
+  font-family: var(--font-tamil);
+  font-size: 0.84rem;
+  color: var(--glow-cyan);
+  margin-top: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .letter-sign {

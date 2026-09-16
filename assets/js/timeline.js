@@ -52,87 +52,91 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateLifeline);
   updateLifeline();
 
-  // 3. Audio Player & Romantic Web Audio Synthesizer
+  // Disable mobile context menu to prevent copy/save popups on long press
+  window.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+
+  // 3. Audio Player & Romantic BGM (Autoplay + Seamless Loop)
   const audioBtn = document.getElementById('audio-toggle');
   const bgmAudio = document.getElementById('bgm-audio');
   let isPlaying = false;
-  let audioCtx = null;
-  let synthInterval = null;
 
-  const chordProgression = [
-    [261.63, 329.63, 392.00, 493.88], // Cmaj7/9
-    [220.00, 261.63, 329.63, 392.00], // Am7
-    [174.61, 220.00, 261.63, 329.63], // Fmaj7
-    [196.00, 246.94, 293.66, 392.00]  // G6
-  ];
-  let chordIdx = 0;
-
-  function initSynthAudio() {
-    if (audioCtx) return;
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContext();
-    } catch(e) {}
+  function updateAudioButton(playing) {
+    isPlaying = playing;
+    if (audioBtn) {
+      if (playing) {
+        audioBtn.classList.add('audio-playing');
+      } else {
+        audioBtn.classList.remove('audio-playing');
+      }
+    }
   }
 
-  function playAmbientPad() {
-    if (!audioCtx || audioCtx.state === 'suspended') return;
-    const chord = chordProgression[chordIdx % chordProgression.length];
-    chordIdx++;
+  function playBGM() {
+    if (!bgmAudio) return Promise.reject();
+    bgmAudio.loop = true;
+    const playPromise = bgmAudio.play();
+    if (playPromise !== undefined) {
+      return playPromise.then(() => {
+        updateAudioButton(true);
+        removeInteractionListeners();
+      });
+    }
+    return Promise.resolve();
+  }
 
-    chord.forEach(freq => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-      gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.035, audioCtx.currentTime + 1.5);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 5.5);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start();
-      osc.stop(audioCtx.currentTime + 5.8);
-    });
+  function pauseBGM() {
+    if (bgmAudio) {
+      bgmAudio.pause();
+      updateAudioButton(false);
+    }
   }
 
   function toggleAudio() {
-    initSynthAudio();
-    if (audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-
-    if (!isPlaying) {
-      if (bgmAudio && bgmAudio.src && !bgmAudio.error) {
-        bgmAudio.play().then(() => {
-          isPlaying = true;
-          audioBtn.classList.add('audio-playing');
-        }).catch(() => {
-          isPlaying = true;
-          audioBtn.classList.add('audio-playing');
-          playAmbientPad();
-          synthInterval = setInterval(playAmbientPad, 4500);
-        });
-      } else {
-        isPlaying = true;
-        audioBtn.classList.add('audio-playing');
-        playAmbientPad();
-        synthInterval = setInterval(playAmbientPad, 4500);
-      }
+    if (!bgmAudio) return;
+    if (bgmAudio.paused) {
+      playBGM().catch(e => console.log('Playback error:', e));
     } else {
-      isPlaying = false;
-      audioBtn.classList.remove('audio-playing');
-      if (bgmAudio) bgmAudio.pause();
-      if (synthInterval) clearInterval(synthInterval);
+      pauseBGM();
     }
   }
 
   if (audioBtn) {
     audioBtn.addEventListener('click', toggleAudio);
   }
+
+  if (bgmAudio) {
+    bgmAudio.loop = true;
+    // Guaranteed non-stop loop
+    bgmAudio.addEventListener('ended', () => {
+      bgmAudio.currentTime = 0;
+      bgmAudio.play().catch(() => {});
+    });
+    bgmAudio.addEventListener('play', () => updateAudioButton(true));
+    bgmAudio.addEventListener('pause', () => updateAudioButton(false));
+  }
+
+  // Fallback: Start playback on very first touch/scroll if browser blocks instant autoplay
+  const interactionEvents = ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'];
+  function handleFirstInteraction() {
+    if (bgmAudio && bgmAudio.paused) {
+      playBGM().catch(() => {});
+    }
+  }
+  function removeInteractionListeners() {
+    interactionEvents.forEach(evt => {
+      window.removeEventListener(evt, handleFirstInteraction, { passive: true });
+    });
+  }
+  interactionEvents.forEach(evt => {
+    window.addEventListener(evt, handleFirstInteraction, { passive: true });
+  });
+
+  // Attempt instant autoplay immediately on page load
+  playBGM().catch(() => {
+    // Autoplay policy prevented immediate playback; interaction handler will fire on first touch/scroll
+  });
 
   // 4. Floating Hearts & Rose Petal Shower Effect
   const floatingContainer = document.getElementById('floating-elements');
