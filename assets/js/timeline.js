@@ -2,27 +2,29 @@
  * Timeline, Lifeline Tracker, Lightbox & Romantic Audio
  */
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Intersection Observer for Scroll Reveals
+  // 1. Instant Reveal for all elements (No delayed loading on scroll)
   const revealElements = document.querySelectorAll('.milestone-item, .poem-interlude-slide');
-  
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -15% 0px',
-    threshold: 0.15
-  };
+  revealElements.forEach(el => el.classList.add('revealed'));
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        if (navigator.vibrate && entry.target.classList.contains('milestone-item')) {
-          try { navigator.vibrate(25); } catch(e) {}
-        }
-      }
-    });
-  }, observerOptions);
-
-  revealElements.forEach(el => revealObserver.observe(el));
+  // Preload all gallery images into browser cache immediately
+  const memoryImageSources = [
+    'assets/images/memory_16.jpg',
+    'assets/images/memory_15.jpg',
+    'assets/images/memory_13.jpg',
+    'assets/images/memory_12.jpg',
+    'assets/images/memory_11.jpg',
+    'assets/images/memory_09.jpg',
+    'assets/images/memory_07.jpg',
+    'assets/images/memory_06.jpg',
+    'assets/images/memory_05.jpg',
+    'assets/images/memory_08.jpg',
+    'assets/images/memory_04.jpg',
+    'assets/images/memory_01.jpg'
+  ];
+  memoryImageSources.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
 
   // 2. Dynamic Lifeline Progress Tracking
   const timelineContainer = document.querySelector('.timeline-container');
@@ -57,10 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
   }, { passive: false });
 
-  // 3. Audio Player & Romantic BGM (Autoplay + Seamless Loop)
+  // 3. Audio Player & Romantic BGM (Pure Seamless Autoplay + Loop)
   const audioBtn = document.getElementById('audio-toggle');
   const bgmAudio = document.getElementById('bgm-audio');
-  const audioPrompt = document.getElementById('audio-prompt-banner');
   let isPlaying = false;
 
   function updateAudioButton(playing) {
@@ -74,21 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function hidePrompt() {
-    if (audioPrompt) {
-      audioPrompt.classList.add('fade-out');
-      setTimeout(() => {
-        audioPrompt.style.display = 'none';
-      }, 500);
-    }
-  }
-
-  function showPrompt() {
-    if (audioPrompt && !isPlaying) {
-      audioPrompt.classList.add('visible');
-    }
-  }
-
   function playBGM() {
     if (!bgmAudio) return Promise.reject();
     bgmAudio.loop = true;
@@ -96,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (playPromise !== undefined) {
       return playPromise.then(() => {
         updateAudioButton(true);
-        hidePrompt();
       });
     }
     return Promise.resolve();
@@ -125,59 +110,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (bgmAudio) {
     bgmAudio.loop = true;
-    // Guaranteed non-stop loop
     bgmAudio.addEventListener('ended', () => {
       bgmAudio.currentTime = 0;
       bgmAudio.play().catch(() => {});
     });
-    bgmAudio.addEventListener('play', () => {
-      updateAudioButton(true);
-      hidePrompt();
-    });
+    bgmAudio.addEventListener('play', () => updateAudioButton(true));
     bgmAudio.addEventListener('pause', () => updateAudioButton(false));
   }
 
-  // Instant Unlock on ANY Touch, Tap or Click
-  const unlockEvents = ['touchstart', 'touchend', 'click', 'pointerup', 'pointerdown'];
-  function unlockAudio(e) {
+  // Silent Instant Unlock on ANY Touch, Scroll, or Tap anywhere on the page
+  const unlockEvents = ['touchstart', 'touchend', 'click', 'scroll', 'pointerup', 'pointerdown'];
+  function silentUnlockAudio() {
     if (bgmAudio && bgmAudio.paused) {
-      const playPromise = bgmAudio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          updateAudioButton(true);
-          hidePrompt();
-          triggerHeartShower(15);
-        }).catch(() => {});
-      }
+      bgmAudio.play().then(() => {
+        updateAudioButton(true);
+      }).catch(() => {});
     }
   }
 
   unlockEvents.forEach(evt => {
-    document.addEventListener(evt, unlockAudio, { passive: true });
-    window.addEventListener(evt, unlockAudio, { passive: true });
+    document.addEventListener(evt, silentUnlockAudio, { passive: true });
+    window.addEventListener(evt, silentUnlockAudio, { passive: true });
   });
 
-  if (audioPrompt) {
-    audioPrompt.addEventListener('click', (e) => {
-      e.stopPropagation();
-      unlockAudio(e);
-    });
-  }
-
   // Attempt immediate autoplay on script execution and on window load
-  function tryAutoplayNow() {
-    playBGM().then(() => {
-      hidePrompt();
-    }).catch(() => {
-      // Browser blocked unmuted autoplay: display floating prompt
-      showPrompt();
-    });
-  }
-
-  tryAutoplayNow();
+  playBGM().catch(() => {});
   window.addEventListener('load', () => {
     if (bgmAudio && bgmAudio.paused) {
-      tryAutoplayNow();
+      playBGM().catch(() => {});
     }
   });
 

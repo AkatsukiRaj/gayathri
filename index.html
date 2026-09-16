@@ -17,6 +17,20 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Preload All Memory Images for Instant Scroll Loading -->
+  <link rel="preload" as="image" href="assets/images/memory_16.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_15.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_13.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_12.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_11.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_09.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_07.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_06.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_05.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_08.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_04.jpg">
+  <link rel="preload" as="image" href="assets/images/memory_01.jpg">
 </head>
 <body>
 
@@ -38,15 +52,6 @@
     <source src="assets/music/bgm.mp3" type="audio/mpeg">
     <source src="assets/music/bgm.m4a" type="audio/mp4">
   </audio>
-
-  <!-- Romantic Autoplay Audio Prompt Banner (Appears only if phone blocks unmuted autoplay) -->
-  <div class="audio-prompt-banner" id="audio-prompt-banner">
-    <div class="audio-prompt-pill">
-      <span class="prompt-icon">🎵</span>
-      <span class="prompt-text">பாடலைக் கேட்க திரையைத் தொடுங்கள் ❤️</span>
-      <span class="prompt-tap-indicator">✨</span>
-    </div>
-  </div>
 
   <!-- Main Content Container (Mobile Centered) -->
   <main class="main-wrapper">
@@ -129,7 +134,7 @@
             <span class="memory-badge">என் பொண்டாட்டி பிறந்தநாள்</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_16.jpg" alt="என் பொண்டாட்டி காயத்ரியின் பிறந்தநாள்" loading="lazy">
+            <img src="assets/images/memory_16.jpg" alt="என் பொண்டாட்டி காயத்ரியின் பிறந்தநாள்" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -152,7 +157,7 @@
             <span class="memory-badge">என் புஜ்ஜுவுக்கு ரோஜா</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_15.jpg" alt="என் புஜ்ஜுவுக்கு இதயம் தந்த ரோஜாக்கள்" loading="lazy">
+            <img src="assets/images/memory_15.jpg" alt="என் புஜ்ஜுவுக்கு இதயம் தந்த ரோஜாக்கள்" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -175,7 +180,7 @@
             <span class="memory-badge">நள்ளிரவு நிலவொளி</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_13.jpg" alt="காலத்தை மறந்த நொடிகள்" loading="lazy">
+            <img src="assets/images/memory_13.jpg" alt="காலத்தை மறந்த நொடிகள்" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -208,7 +213,7 @@
             <span class="memory-badge">என் பட்டுவோட பயணம்</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_12.jpg" alt="காற்றோடு கலந்த காதல்" loading="lazy">
+            <img src="assets/images/memory_12.jpg" alt="காற்றோடு கலந்த காதல்" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -231,7 +236,7 @@
             <span class="memory-badge">என் புஜ்ஜு சிரிப்பு</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_11.jpg" alt="இரு இதயங்களின் சிரிப்பு" loading="lazy">
+            <img src="assets/images/memory_11.jpg" alt="இரு இதயங்களின் சிரிப்பு" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -263,7 +268,7 @@
             <span class="memory-badge">நமது சேட்டைகள்</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_09.jpg" alt="மாயாஜால 3D உலகம்" loading="lazy">
+            <img src="assets/images/memory_09.jpg" alt="மாயாஜால 3D உலகம்" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -286,7 +291,7 @@
             <span class="memory-badge">என் பனி தேவதை</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_07.jpg" alt="பனிமலரே என் நிலவே" loading="lazy">
+            <img src="assets/images/memory_07.jpg" alt="பனிமலரே என் நிலவே" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -309,7 +314,7 @@
             <span class="memory-badge">பனிக்காலத்துக் காதல்</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_06.jpg" alt="பனிச்சாரலில் உன் தோள் சாய்ந்து" loading="lazy">
+            <img src="assets/images/memory_06.jpg" alt="பனிச்சாரலில் உன் தோள் சாய்ந்து" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -332,7 +337,7 @@
             <span class="memory-badge">என் ஆயுள் வரை</span>
           </div>
           <div class="image-frame">
-            <img src="assets/images/memory_05.jpg" alt="நெஞ்சமெல்லாம் நீயே" loading="lazy">
+            <img src="assets/images/memory_05.jpg" alt="நெஞ்சமெல்லாம் நீயே" loading="eager" decoding="async">
             <div class="image-glow-overlay"></div>
           </div>
           <div class="memory-content">
@@ -356,15 +361,15 @@
           </div>
           <div class="memory-grid-trio">
             <div class="image-frame grid-img-large">
-              <img src="assets/images/memory_08.jpg" alt="என் தேவதையின் சிரிப்பு" loading="lazy">
+              <img src="assets/images/memory_08.jpg" alt="என் தேவதையின் சிரிப்பு" loading="eager" decoding="async">
               <div class="image-glow-overlay"></div>
             </div>
             <div class="image-frame">
-              <img src="assets/images/memory_04.jpg" alt="பூக்களின் புன்னகை" loading="lazy">
+              <img src="assets/images/memory_04.jpg" alt="பூக்களின் புன்னகை" loading="eager" decoding="async">
               <div class="image-glow-overlay"></div>
             </div>
             <div class="image-frame">
-              <img src="assets/images/memory_01.jpg" alt="இதயங்களின் சங்கமம்" loading="lazy">
+              <img src="assets/images/memory_01.jpg" alt="இதயங்களின் சங்கமம்" loading="eager" decoding="async">
               <div class="image-glow-overlay"></div>
             </div>
           </div>

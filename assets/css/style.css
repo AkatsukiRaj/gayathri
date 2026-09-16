@@ -143,59 +143,6 @@ body {
   text-shadow: 0 0 10px var(--glow-rose);
 }
 
-/* Audio Autoplay Prompt Banner */
-.audio-prompt-banner {
-  position: fixed;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%) translateY(0);
-  z-index: 9999;
-  display: none;
-  animation: floatPrompt 2.2s ease-in-out infinite;
-  cursor: pointer;
-  max-width: 92%;
-}
-
-.audio-prompt-banner.visible {
-  display: block;
-}
-
-.audio-prompt-banner.fade-out {
-  opacity: 0;
-  transform: translateX(-50%) translateY(25px);
-  transition: all 0.5s ease-out;
-  pointer-events: none;
-}
-
-.audio-prompt-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: linear-gradient(135deg, rgba(255, 0, 128, 0.92), rgba(168, 85, 247, 0.92));
-  border: 1.5px solid rgba(0, 240, 255, 0.85);
-  padding: 12px 22px;
-  border-radius: 50px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 10px 32px rgba(255, 0, 128, 0.65), 0 0 22px rgba(0, 240, 255, 0.45);
-  color: #fff;
-  font-family: var(--font-tamil);
-  font-size: 0.94rem;
-  font-weight: 700;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  white-space: nowrap;
-}
-
-.audio-prompt-pill .prompt-icon {
-  font-size: 1.25rem;
-  animation: heartPulse 1.2s infinite ease-in-out;
-}
-
-@keyframes floatPrompt {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-6px); }
-}
-
 /* Main Mobile Wrapper */
 .main-wrapper {
   position: relative;
@@ -355,15 +302,14 @@ body {
   position: relative;
   padding-left: 56px;
   margin-bottom: 5cm;
-  opacity: 0;
-  transform: translateY(35px) scale(0.96);
-  transition: all 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity: 1;
+  transform: none;
   z-index: 5;
 }
 
 .milestone-item.revealed {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: none;
 }
 
 /* Node Point on the Lifeline */
@@ -375,11 +321,10 @@ body {
   height: 20px;
   border-radius: 50%;
   background: #090616;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  border: 2px solid var(--glow-cyan);
+  box-shadow: 0 0 16px var(--glow-pink), 0 0 25px var(--glow-cyan);
   transform: translate(-50%, -50%);
   z-index: 4;
-  transition: all 0.4s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -389,19 +334,9 @@ body {
   content: "";
   width: 8px;
   height: 8px;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
-  transition: all 0.4s ease;
-}
-
-.milestone-item.revealed .milestone-node {
-  border-color: var(--glow-cyan);
-  box-shadow: 0 0 20px var(--glow-pink), 0 0 35px var(--glow-cyan);
-}
-
-.milestone-item.revealed .milestone-node::before {
   background: var(--glow-pink);
-  transform: scale(1.4);
+  border-radius: 50%;
+  transform: scale(1.3);
 }
 
 /* Memory Card */
@@ -544,15 +479,14 @@ body {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-shadow: 0 12px 35px rgba(255, 0, 128, 0.25), 0 0 25px rgba(0, 240, 255, 0.15);
-  opacity: 0;
-  transform: translateX(-40px);
-  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity: 1;
+  transform: none;
   text-align: center;
 }
 
 .poem-interlude-slide.revealed {
   opacity: 1;
-  transform: translateX(0);
+  transform: none;
 }
 
 .interlude-sparkle {
