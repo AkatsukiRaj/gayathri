@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Audio Player & Romantic BGM (Autoplay + Seamless Loop)
   const audioBtn = document.getElementById('audio-toggle');
   const bgmAudio = document.getElementById('bgm-audio');
+  const audioPrompt = document.getElementById('audio-prompt-banner');
   let isPlaying = false;
 
   function updateAudioButton(playing) {
@@ -73,6 +74,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function hidePrompt() {
+    if (audioPrompt) {
+      audioPrompt.classList.add('fade-out');
+      setTimeout(() => {
+        audioPrompt.style.display = 'none';
+      }, 500);
+    }
+  }
+
+  function showPrompt() {
+    if (audioPrompt && !isPlaying) {
+      audioPrompt.classList.add('visible');
+    }
+  }
+
   function playBGM() {
     if (!bgmAudio) return Promise.reject();
     bgmAudio.loop = true;
@@ -80,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (playPromise !== undefined) {
       return playPromise.then(() => {
         updateAudioButton(true);
-        removeInteractionListeners();
+        hidePrompt();
       });
     }
     return Promise.resolve();
@@ -93,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function toggleAudio() {
+  function toggleAudio(e) {
+    if (e) e.stopPropagation();
     if (!bgmAudio) return;
     if (bgmAudio.paused) {
       playBGM().catch(e => console.log('Playback error:', e));
@@ -113,29 +130,62 @@ document.addEventListener('DOMContentLoaded', () => {
       bgmAudio.currentTime = 0;
       bgmAudio.play().catch(() => {});
     });
-    bgmAudio.addEventListener('play', () => updateAudioButton(true));
+    bgmAudio.addEventListener('play', () => {
+      updateAudioButton(true);
+      hidePrompt();
+    });
     bgmAudio.addEventListener('pause', () => updateAudioButton(false));
   }
 
-  // Fallback: Start playback on very first touch/scroll if browser blocks instant autoplay
-  const interactionEvents = ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'];
-  function handleFirstInteraction() {
+  // Instant Unlock on ANY Touch, Tap or Click
+  const unlockEvents = ['touchstart', 'touchend', 'click', 'pointerup', 'pointerdown'];
+  function unlockAudio(e) {
     if (bgmAudio && bgmAudio.paused) {
-      playBGM().catch(() => {});
+      const playPromise = bgmAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          updateAudioButton(true);
+          hidePrompt();
+          triggerHeartShower(15);
+        }).catch(() => {});
+      }
     }
   }
-  function removeInteractionListeners() {
-    interactionEvents.forEach(evt => {
-      window.removeEventListener(evt, handleFirstInteraction, { passive: true });
-    });
-  }
-  interactionEvents.forEach(evt => {
-    window.addEventListener(evt, handleFirstInteraction, { passive: true });
+
+  unlockEvents.forEach(evt => {
+    document.addEventListener(evt, unlockAudio, { passive: true });
+    window.addEventListener(evt, unlockAudio, { passive: true });
   });
 
-  // Attempt instant autoplay immediately on page load
-  playBGM().catch(() => {
-    // Autoplay policy prevented immediate playback; interaction handler will fire on first touch/scroll
+  if (audioPrompt) {
+    audioPrompt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      unlockAudio(e);
+    });
+  }
+
+  // Attempt immediate autoplay on script execution and on window load
+  function tryAutoplayNow() {
+    playBGM().then(() => {
+      hidePrompt();
+    }).catch(() => {
+      // Browser blocked unmuted autoplay: display floating prompt
+      showPrompt();
+    });
+  }
+
+  tryAutoplayNow();
+  window.addEventListener('load', () => {
+    if (bgmAudio && bgmAudio.paused) {
+      tryAutoplayNow();
+    }
+  });
+
+  // Resume when returning to tab
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && bgmAudio && isPlaying && bgmAudio.paused) {
+      bgmAudio.play().catch(() => {});
+    }
   });
 
   // 4. Floating Hearts & Rose Petal Shower Effect

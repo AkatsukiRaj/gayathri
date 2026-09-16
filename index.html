@@ -34,10 +34,19 @@
     </div>
     <span class="audio-label">BGM</span>
   </button>
-  <audio id="bgm-audio" loop preload="auto" playsinline>
+  <audio id="bgm-audio" autoplay loop preload="auto" playsinline src="assets/music/bgm.mp3">
     <source src="assets/music/bgm.mp3" type="audio/mpeg">
     <source src="assets/music/bgm.m4a" type="audio/mp4">
   </audio>
+
+  <!-- Romantic Autoplay Audio Prompt Banner (Appears only if phone blocks unmuted autoplay) -->
+  <div class="audio-prompt-banner" id="audio-prompt-banner">
+    <div class="audio-prompt-pill">
+      <span class="prompt-icon">🎵</span>
+      <span class="prompt-text">பாடலைக் கேட்க திரையைத் தொடுங்கள் ❤️</span>
+      <span class="prompt-tap-indicator">✨</span>
+    </div>
+  </div>
 
   <!-- Main Content Container (Mobile Centered) -->
   <main class="main-wrapper">

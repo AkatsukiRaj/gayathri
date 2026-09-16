@@ -143,6 +143,59 @@ body {
   text-shadow: 0 0 10px var(--glow-rose);
 }
 
+/* Audio Autoplay Prompt Banner */
+.audio-prompt-banner {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 9999;
+  display: none;
+  animation: floatPrompt 2.2s ease-in-out infinite;
+  cursor: pointer;
+  max-width: 92%;
+}
+
+.audio-prompt-banner.visible {
+  display: block;
+}
+
+.audio-prompt-banner.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(25px);
+  transition: all 0.5s ease-out;
+  pointer-events: none;
+}
+
+.audio-prompt-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(255, 0, 128, 0.92), rgba(168, 85, 247, 0.92));
+  border: 1.5px solid rgba(0, 240, 255, 0.85);
+  padding: 12px 22px;
+  border-radius: 50px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 10px 32px rgba(255, 0, 128, 0.65), 0 0 22px rgba(0, 240, 255, 0.45);
+  color: #fff;
+  font-family: var(--font-tamil);
+  font-size: 0.94rem;
+  font-weight: 700;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+.audio-prompt-pill .prompt-icon {
+  font-size: 1.25rem;
+  animation: heartPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes floatPrompt {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-6px); }
+}
+
 /* Main Mobile Wrapper */
 .main-wrapper {
   position: relative;
