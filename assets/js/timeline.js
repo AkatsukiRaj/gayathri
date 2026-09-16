@@ -225,4 +225,59 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === lightbox) lightbox.classList.remove('active');
     });
   }
+
+  // 8. Birthday Countdown Timer to October 3
+  function initBirthdayCountdown() {
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl = document.getElementById('cd-mins');
+    const secsEl = document.getElementById('cd-secs');
+    const surpriseMsgEl = document.getElementById('surprise-msg');
+
+    if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+    function getNextOct3() {
+      const now = new Date();
+      let target = new Date(now.getFullYear(), 9, 3, 0, 0, 0); // Month is 0-indexed: 9 = October
+      if (now.getTime() > target.getTime() + (24 * 60 * 60 * 1000)) {
+        target = new Date(now.getFullYear() + 1, 9, 3, 0, 0, 0);
+      }
+      return target;
+    }
+
+    const targetDate = getNextOct3();
+
+    function updateTimer() {
+      const now = new Date();
+      const diff = targetDate.getTime() - now.getTime();
+
+      if (diff <= 0 && diff > -86400000) {
+        // Today is October 3!
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minsEl.textContent = '00';
+        secsEl.textContent = '00';
+        if (surpriseMsgEl) {
+          surpriseMsgEl.innerHTML = '🎉 இன்று என் பொண்டாட்டி காயத்ரி பிறந்தநாள்! 🎂👑';
+        }
+        return;
+      }
+
+      const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+      const hours = Math.max(0, Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+      const minutes = Math.max(0, Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
+      const seconds = Math.max(0, Math.floor((diff % (1000 * 60)) / 1000));
+
+      daysEl.textContent = String(days).padStart(2, '0');
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minsEl.textContent = String(minutes).padStart(2, '0');
+      secsEl.textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+
+  initBirthdayCountdown();
+
 });

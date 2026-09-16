@@ -414,7 +414,7 @@ body {
   pointer-events: none;
 }
 
-.tap-zoom-hint {
+/* removed tap hint */ .tap-zoom-hint-disabled {
   position: absolute;
   bottom: 10px;
   right: 12px;
@@ -833,4 +833,137 @@ body {
   color: rgba(255, 255, 255, 0.45);
   font-family: var(--font-english);
   letter-spacing: 1px;
+}
+
+/* Sticky / Floating Birthday Countdown Widget */
+.bday-countdown-wrapper {
+  position: relative;
+  width: 100%;
+  margin: -10px auto 40px;
+  padding: 16px 14px;
+  background: linear-gradient(135deg, rgba(28, 12, 54, 0.88), rgba(65, 8, 48, 0.88));
+  border: 1.5px solid rgba(0, 240, 255, 0.45);
+  border-radius: 24px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 10px 35px rgba(255, 0, 128, 0.3), 0 0 25px rgba(0, 240, 255, 0.2);
+  text-align: center;
+  overflow: hidden;
+}
+
+.bday-countdown-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 0, 128, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  animation: pulseGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+.bday-countdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.bday-crown-icon {
+  font-size: 1.3rem;
+  animation: heartPulse 1.5s infinite;
+}
+
+.bday-title {
+  font-family: var(--font-tamil);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.bday-name-tag {
+  color: var(--glow-gold);
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+}
+
+.bday-surprise-msg {
+  font-family: var(--font-tamil);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--glow-cyan);
+  margin-bottom: 14px;
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+  animation: textShimmer 3s ease infinite alternate;
+}
+
+@keyframes textShimmer {
+  0% { opacity: 0.85; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1.02); }
+}
+
+.countdown-boxes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.time-box {
+  background: rgba(10, 6, 24, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 8px 10px;
+  min-width: 62px;
+  box-shadow: inset 0 0 15px rgba(255, 0, 128, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-val {
+  font-family: var(--font-english);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  text-shadow: 0 0 14px var(--glow-pink);
+}
+
+.time-lbl {
+  font-family: var(--font-tamil);
+  font-size: 0.65rem;
+  color: var(--text-pink);
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.countdown-colon {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--glow-rose);
+  margin-top: -12px;
+  animation: colonBlink 1s ease infinite;
+}
+
+@keyframes colonBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.bday-subtext {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 6px;
+  font-style: italic;
+  font-family: var(--font-tamil);
 }
